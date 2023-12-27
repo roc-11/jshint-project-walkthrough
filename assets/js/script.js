@@ -38,11 +38,17 @@ document.getElementById('submit').addEventListener('click', e => postForm(e));
 
 async function postForm(e) {
     // get the form data from the HTML form 
-    const form = new FormData(document.getElementById('checksform'));
+    const form = processOptions(new FormData(document.getElementById('checksform')));
 
     /* test 
     for(let e of form.entries()) {
         console.log(e);
+    }
+    */
+
+    /* test 
+    for(let entry of form.entries()) {
+        console.log(entry);
     }
     */
 
@@ -84,4 +90,21 @@ function displayErrors(data) {
     document.getElementById('results-content').innerHTML = results;
 
     resultsModal.show();
+}
+
+function processOptions(form) {
+
+    let optionArray = [];
+
+    for (let entry of form.entries()){
+        if(entry[0] === "options") {
+            optionArray.push(entry[1]);
+        }
+    }
+
+    form.delete("options");
+
+    form.append("options", optionArray.join());
+
+    return form;
 }
