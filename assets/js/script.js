@@ -16,6 +16,10 @@ async function getStatus(e) {
         // console.log(data.expiry);
         displayStatus(data);
     } else {
+
+        // display exception has to be called BEFORE the THROW
+        displayException(data);
+
         throw new Error(data.error);
     }
 }
@@ -66,6 +70,10 @@ async function postForm(e) {
         // console.log(data);
         displayErrors(data);
     } else {
+
+        // display exception has to be called BEFORE the THROW
+        displayException(data);
+
         throw new Error(data.error);
     }
 }
@@ -107,4 +115,21 @@ function processOptions(form) {
     form.append("options", optionArray.join());
 
     return form;
+}
+
+// to show error messages in a modal
+function displayException(data) {
+
+    let heading = 'An Exception Occurred';
+    let results =  `<div>The API returned the status code: <strong>${data.status_code}</strong></div>`;
+    results += `<div>Error number: <strong>${data.error_no}</strong></div>`;
+    results += `<div>Error text: <strong>${data.error}</strong></div>`;
+
+    // console.log(heading, results, data);
+
+    document.getElementById('resultsModalTitle').innerHTML = heading;
+
+    document.getElementById('results-content').innerHTML = results;
+
+    resultsModal.show();
 }
